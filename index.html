@@ -23,27 +23,9 @@ body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;backg
 .card{border-radius:25px;padding:50px;max-width:1200px;width:90%;animation:fadeInCard 1s ease forwards;line-height:1.5;transition:background 0.5s ease,box-shadow 0.5s ease;position:relative;z-index:1;backdrop-filter:blur(5px)}
 @keyframes fadeInCard{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
-.header-container {
-    text-align: center;
-    margin-bottom: 50px;
-    position: relative;
-    padding: 20px 30px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    display: inline-block;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
-}
-.header-tag {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    opacity: 0.4;
-    margin-bottom: 8px;
-    font-weight: 400;
-}
+.header-container {text-align: center; margin-bottom: 50px; position: relative; padding: 20px 30px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; display: inline-block; left: 50%; transform: translateX(-50%); box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);}
+.header-tag {font-size: 0.75rem; text-transform: uppercase; letter-spacing: 4px; opacity: 0.4; margin-bottom: 8px; font-weight: 400;}
+.system-time {display: block; margin-top: 15px; font-size: 0.65rem; color: rgba(255, 255, 255, 0.4); letter-spacing: 3px; text-transform: uppercase;}
 
 h1,h2{transition:color 0.3s ease,text-shadow 0.3s ease,transform 0.3s ease,filter 0.3s ease;display:block;background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
 h1{font-size:2.6rem;text-align:center;font-weight:900;margin:0;letter-spacing: 1px;}
@@ -68,6 +50,16 @@ li:nth-child(8){animation-delay:1s}
 .command{font-weight:700;font-size:1.1rem;display:inline-block;transition:color 0.3s ease,text-shadow 0.3s ease,transform 0.3s ease}
 .desc{margin-left:20px;color:var(--text-desc, #f5f5f5);white-space:pre-line;transition:color 0.3s ease;margin-top:5px}
 li:hover .desc{color:var(--text-desc-hover, #ffffff)}
+
+.badge-new {font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; padding: 2px 6px; border-radius: 6px; margin-left: 10px; vertical-align: middle; display: inline-block; background: rgba(255, 255, 255, 0.07); border: 1px solid #ffffff; color: #ffffff; box-shadow: 0 0 10px rgba(255, 255, 255, 0.25); animation: pulseNew 2s infinite ease-in-out;}
+.badge-cd {font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 6px; margin-left: 10px; vertical-align: middle; display: inline-block; background: rgba(255, 165, 0, 0.05); border: 1px solid #ffa500; color: #ffa500; box-shadow: 0 0 6px rgba(255, 165, 0, 0.15);}
+.badge-all {font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 6px; margin-left: 10px; vertical-align: middle; display: inline-block; background: rgba(20, 80, 45, 0.2); border: 1px solid #1b7a43; color: #4cd184; box-shadow: 0 0 4px rgba(27, 122, 67, 0.1);}
+.badge-mod {font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 6px; margin-left: 10px; vertical-align: middle; display: inline-block; background: rgba(255, 0, 0, 0.1); border: 1px solid #ff4a4a; color: #ff4a4a; box-shadow: 0 0 8px rgba(255, 74, 74, 0.2);}
+
+[data-tooltip] {position: relative; cursor: help;}
+[data-tooltip]::after {content: attr(data-tooltip); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%) translateY(5px); background: rgba(10, 10, 10, 0.95); border: 1px solid rgba(255, 255, 255, 0.15); color: #ffffff; padding: 5px 10px; font-size: 0.7rem; font-weight: 400; letter-spacing: 0; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); z-index: 100; font-family: 'JetBrains Mono', monospace;}
+[data-tooltip]:hover::after {opacity: 1; transform: translateX(-50%) translateY(0);}
+@keyframes pulseNew {0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.03); }}
 </style>
 </head>
 <body>
@@ -75,62 +67,50 @@ li:hover .desc{color:var(--text-desc-hover, #ffffff)}
 
 <canvas id="bg-canvas"></canvas>
 <div class="card">
-  
   <div class="header-container">
     <div class="header-tag">// Справочник команд Bebboty</div>
     <h1>СПИСОК КОМАНД И ПРАВИЛ</h1>
+    <div class="system-time" id="system-time">--:--:-- MSK</div>
   </div>
 
 <h2>Игры</h2>
 <ul>
-<li><span class="command">!реакция</span><div class="desc">- Цель: написать вовремя команду !жми после сигнала "ЖМИ"<br>- Как играть: напиши !реакция, дождись сигнала, потом сразу пиши команду !жми<br>- Условия победы: успел за 1 секунду — +1 победа<br>- Проигрыш: слишком рано или медленно - наказание <br>- КД: 7 минут между играми</div></li>
-<li><span class="command">!точность</span><div class="desc">- Цель: угадать загаданное ботом число от 1 до 100<br>- Как играть: напиши !точность, бот загадает число от 1 до 100, затем пиши команду !число &lt;твое число&gt;<br>- Победа: (разница 7) +1 победа, (разница 5) +2 победы, (разница 3) +3 победы, (разница 0) +5 побед<br>- Проигрыш: разница больше 7 — мут на 1 минуту<br>- КД: 5 минут между играми</div></li>
-<li><span class="command">!слоты</span><div class="desc">- Как играть: напиши !слоты, бот случайным образом выбирает три ника из зрителей в чате<br>- Победа: если все три выбранных ника совпадают — +10 побед<br>- Проигрыш: если комбинация не совпала — проигрыш<br>- Особенности: система полностью случайная, зависит от текущих зрителей в чате<br>- КД: 10 секунд</div></li>
-<li><span class="command">!blackjack</span><div class="desc">- Игра против дилера, цель набрать очки как можно ближе к 21, не перебрав очки<br>- Команды внутри игры: !hit — взять ещё карту, !stand — остановиться и сравнить с дилером<br>- Победа: ваши очки больше дилера или дилер перебрал — +1 победа<br>- Проигрыш: если дилер выигрывает — -1 победа + наказание <br>- КД: 10 минут между играми</div></li>
-<li><span class="command">!drunk</span><div class="desc">- Случайное событие, которое может быть хорошим или плохому<br>- Победа: удачное событие — +1 победа<br>- Проигрыш: неудачное событие — -1 победа + наказание<br>- КД: 1 час между использованием</div></li>
-<li><span class="command">!пиво</span><div class="desc">- Цель: выполнить случайное задание, чтобы не "спиться"<br>- Как играть: напиши !пиво, бот предложит задание: • посчитать количество символов • написать слово наоборот • решить математический пример • посчитать букву в тексте • написать несколько букв подряд<br>- Победа: правильный ответ — +1 победа<br>- Проигрыш: неверный ответ или время вышло — наказание<br>- КД: 7 минут между играми</div></li>
-<li><span class="command">!смайл</span><div class="desc">- Что делает: твой персональный "эмоут дня" на основе 7tv смайлов канала<br>- Обнуление: таймер сбрасывается ровно в 00:00 по МСК.</div></li>  
-<li><span class="command">!crocodile (!старт, !крокодил, !start)</span><div class="desc">- Как играть: напиши !старт, чтобы начать игру<br>- Количество игроков: минимум 3<br>- Правила: одному из игроков выпадает слово, которое ему нужно объяснить за 1 минуту<br>- Награда: за верное объяснение и угадывание слова начисляется 10 побед</div></li>  
-<li><span class="command">!quiz (!квиз)</span><div class="desc">- Что делает: любой из смельчаков кидает вызов любому чаттеру с помощью команды !quiz [ник]. Для ответа команда !answer. Тот, кто первый выберет правильный вариант, получает 5 побед.</div></li> 
+<li><span class="command">!реакция</span><span class="badge-cd" data-tooltip="Перезарядка команды">7 мин КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Цель: написать вовремя команду !жми после сигнала "ЖМИ"<br>- Как играть: напиши !реакция, дождись сигнала, потом сразу пиши команду !жми<br>- Условия победы: успел за 1 секунду — +1 победа<br>- Проигрыш: слишком рано или медленно - наказание <br></li>
+<li><span class="command">!точность</span><span class="badge-cd" data-tooltip="Перезарядка команды">5 мин КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Цель: угадать загаданное ботом число от 1 до 100<br>- Как играть: напиши !точность, бот загадает число от 1 до 100, затем пиши команду !число &lt;твое число&gt;<br>- Победа: (разница 7) +1 победа, (разница 5) +2 победы, (разница 3) +3 победы, (разница 0) +5 побед<br>- Проигрыш: разница больше 7 — мут на 1 минуту<br></li>
+<li><span class="command">!слоты</span><span class="badge-cd" data-tooltip="Перезарядка команды">10 сек КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Как играть: напиши !слоты, бот случайным образом выбирает три ника из зрителей в чате<br>- Победа: если все три выбранных ника совпадают — +10 побед<br>- Проигрыш: если комбинация не совпала — проигрыш<br>- Особенности: система полностью случайная, зависит от текущих зрителей в чате<br>- КД: 10 секунд</div></li>
+<li><span class="command">!blackjack</span><span class="badge-cd" data-tooltip="Перезарядка команды">10 мин КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Игра против дилера, цель набрать очки как можно ближе к 21, не перебрав очки<br>- Команды внутри игры: !hit — взять ещё карту, !stand — остановиться и сравнить с дилером<br>- Победа: ваши очки больше дилера или дилер перебрал — +1 победа<br>- Проигрыш: если дилер выигрывает — -1 победа + наказание <br></li>
+<li><span class="command">!drunk</span><span class="badge-cd" data-tooltip="Перезарядка команды">1 час КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Случайное событие, которое может быть хорошим или плохому<br>- Победа: удачное событие — +1 победа<br>- Проигрыш: неудачное событие — -1 победа + наказание<br></li>
+<li><span class="command">!пиво</span><span class="badge-cd" data-tooltip="Перезарядка команды">7 мин КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Цель: выполнить случайное задание, чтобы не "спиться"<br>- Как играть: напиши !пиво, бот предложит задание: • посчитать количество символов • написать слово наоборот • решить математический пример • посчитать букву в тексте • написать несколько букв подряд<br>- Победа: правильный ответ — +1 победа<br>- Проигрыш: неверный ответ или время вышло — наказание<br></li>
+<li><span class="command">!смайл</span><span class="badge-cd" data-tooltip="Перезарядка команды">00:00 MSK КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: твой персональный "эмоут дня" на основе 7tv смайлов канала<br></div></li>  
+<li><span class="command">!crocodile (!старт, !крокодил, !start)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Как играть: напиши !старт, чтобы начать игру<br>- Количество игроков: минимум 3<br>- Правила: одному из игроков выпадает слово, которое ему нужно объяснить за 1 минуту<br>- Награда: за верное объяснение и угадывание слова начисляется 10 побед</div></li>  
+<li><span class="command">!quiz (!квиз)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: любой из смельчаков кидает вызов любому чаттеру с помощью команды !quiz [ник]. Для ответа команда !answer. Тот, кто первый выберет правильный вариант, получает 5 побед.</div></li> 
 </ul>
 <h2>Статистика</h2>
 <ul>
-<li><span class="command">!wins (!победы)</span><div class="desc">- Отображает топ-чаттеров с наибольшим количеством побед<br>- Позволяет увидеть, кто лидирует в мини-игры<br>- Победы обновляются автоматически после каждой игры</div></li>
-<li><span class="command">!box (!бокс)</span><div class="desc">- Что делает: открывает призовой бокс с уникальным случайным эмодзи<br>- Как использовать: напиши !box, чтобы забрать свою награду за повышение ранга<br>- Правила получения:<br>1) Один ранг - один бокс. Ты получаешь право открыть бокс только после того, как использовал команду !rank up и перешел на новый ранг<br>2) Выпавший эмодзи кладется в твой личный !инвентарь</div></li>
-<li><span class="command">!inventory (!инвентарь)</span><div class="desc">- Что делает: открывает твой личный инвентарь со всеми собранными эмодзи</div></li>
-<li><span class="command">!emoji (!set)</span><div class="desc">- Что делает: устанавливает выбранный эмодзи из инвентаря<br>- Пример: !emoji 🔥</div></li>
-<li><span class="command">!rank (!ранг)</span><div class="desc">- Что делает: показывает текущий статус на канале, количество накопленных побед и возможность получения награды<br>- Как использовать:<br>!rank  - проверить свой ранг, количество побед и доступность команды !box<br>!rank up - повысить свой ранг, если накоплено достаточно побед<br>- Система прогресса: Начиная с ранга "***" (1 ранг) каждое повышение открывает доступ к команде !box, где открывается уникальный смайлик</div></li>
+<li><span class="command">!wins (!победы)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Отображает топ-чаттеров с наибольшим количеством побед<br>- Позволяет увидеть, кто лидирует в мини-игры<br>- Победы обновляются автоматически после каждой игры</div></li>
+<li><span class="command">!box (!бокс)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: открывает призовой бокс с уникальным случайным эмодзи<br>- Как использовать: напиши !box, чтобы забрать свою награду за повышение ранга<br>- Правила получения:<br>1) Один ранг - один бокс. Ты получаешь право открыть бокс только после того, как использовал команду !rank up и перешел на новый ранг<br>2) Выпавший эмодзи кладется в твой личный !инвентарь</div></li>
+<li><span class="command">!inventory</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: открывает твой личный инвентарь со всеми собранными эмодзи</div></li>
+<li><span class="command">!emoji (!set)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: устанавливает выбранный эмодзи из инвентаря<br>- Пример: !emoji 🔥</div></li>
+<li><span class="command">!rank (!ранг)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: показывает текущий статус на канале, количество накопленных побед и возможность получения награды<br>- Как использовать:<br>!rank  - проверить свой ранг, количество побед и доступность команды !box<br>!rank up - повысить свой ранг, если накоплено достаточно побед<br>- Система прогресса: Начиная с ранга "***" (1 ранг) каждое повышение открывает доступ к команде !box, где открывается уникальный смайлик</div></li>
 </ul>
 <h2>Крутые команды</h2>
 <ul>
-<li><span class="command">!гороскоп (!г)</span><div class="desc">- Что делает: Показывает ваш САМЫЙ НАСТОЯЩИЙ гороскоп из всех существующих </div></li>
-<li><span class="command">!help</span><div class="desc">- Показывает этот список команд и правила игр </div></li>
-<li><span class="command">!followage (!fa)</span><div class="desc">- Что делает: показывает, как давно пользователь зафолловлен на канал </div></li>
-<li><span class="command">!sa (!sub)</span><div class="desc">- Что делает: показывает стаж платной подписки пользователя на канал </div></li>  
-<li><span class="command">!holidays (!праздник)</span><div class="desc">- Что делает: Выводит список всех праздников, знаменательных событий и необычных дат, которые отмечаются сегодня во всём мире </div></li>    
-<li><span class="command">!color </span><div class="desc">- Что делает: Показывает HEX-код твоего цвета и дает ему уникальное (иногда обидное) название<br>- Как использовать: !color @user - узнать, что за оттенок у другого чаттера  </div></li> 
-<li><span class="command">!profile</span><div class="desc">- Что делает: Показывает вашу статистику, ранги и накопленные достижения</div></li>
-<li><span class="command">!qs(!?)</span><div class="desc">- Ответьте на парочку вопросов чтобы стать лучшей версией себя.</div></li> 
+<li><span class="command">!гороскоп (!г)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: Показывает ваш САМЫЙ НАСТОЯЩИЙ гороскоп из всех существующих </div></li>
+<li><span class="command">!help</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Показывает этот список команд и правила игр </div></li>
+<li><span class="command">!followage (!fa)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: показывает, как давно пользователь зафолловлен на канал </div></li>
+<li><span class="command">!sa (!sub)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: показывает стаж платной подписки пользователя на канал </div></li>  
+<li><span class="command">!holidays (!праздник)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: Выводит список всех праздников, знаменательных событий и необычных дат, которые отмечаются сегодня во всём мире </div></li>    
+<li><span class="command">!color </span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: Показывает HEX-код твоего цвета и дает ему уникальное (иногда обидное) название<br>- Как использовать: !color @user - узнать, что за оттенок у другого чаттера  </div></li> 
+<li><span class="command">!profile</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: Показывает вашу статистику, ранги и накопленные достижения</div></li>
+<li><span class="command">!qs(!?)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Ответьте на парочку вопросов чтобы стать лучшей версией себя.</div></li> 
 </ul>
 <h2>Полезные команды</h2>
 <ul>
-<li><span class="command">!link</span><div class="desc">- Что делает: Позволяет создавать, удалять и спамить кастомные команды<br>- Как использовать: !link [название] [текст]. Для удаления: !link del [название команды]</div></li>
-  
+<li><span class="command">!link</span><span class="badge-new" data-tooltip="Недавнее обновление бота">NEW</span><span class="badge-mod" data-tooltip="Доступно только модераторам">MOD</span><div class="desc">- Что делает: Позволяет создавать, удалять и спамить кастомные команды<br>- Как использовать: !link [название] [текст]. Для удаления: !link del [название команды]</div></li>  
 </ul>
 </div>
 <script>
 const themes=[
-  {
-    name: "Blue",
-    bgBody:"#0a1a2a",
-    cardGradient:"linear-gradient(145deg, #0d1a33, #1a3a6a)",
-    glow:"0 0 15px rgba(0, 204, 255, 0.4)",
-    glowSizeCommand:"0 0 3px",
-    command:"#00ccff",
-    h2Shadow:"0 0 2px #00ccff, 1px 1px 2px #000",
-    hGradient:"linear-gradient(to right, #66f0ff, #33ccff)",
-    btnGlow: "rgba(0, 204, 255, 0.25)"
-  },
   {
     name: "Bolotny",
     bgBody:"#1c2116",
@@ -209,7 +189,16 @@ function nextTheme() {
     applyTheme(themes[currentThemeIndex]);
 }
 
-currentThemeIndex = Math.floor(Math.random() * themes.length);
+function updateTime() {
+    const now = new Date();
+    // UTC + 3 часа для Москвы
+    const mskTime = new Date(now.getTime() + (3 * 60 * 60 * 1000));
+    document.getElementById('system-time').innerText = `${mskTime.toISOString().substring(11, 19)}`;
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+currentThemeIndex = 2; 
 applyTheme(themes[currentThemeIndex]);
 
 document.querySelectorAll('li').forEach(el=>{
