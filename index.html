@@ -87,32 +87,37 @@ class Circle{
 constructor(){
 this.x=Math.random()*w;
 this.y=Math.random()*h;
-this.r=Math.random()*40+20;
-this.vX=(Math.random()-0.5)*0.5;
-this.vY=(Math.random()-0.5)*0.5;
-this.alpha=Math.random()*0.15+0.05;
+this.r=Math.random()*60+40;
+this.vX=(Math.random()-0.5)*0.3;
+this.vY=(Math.random()-0.5)*0.3;
+this.alpha=Math.random()*0.12+0.04;
 this.growth=(Math.random()-0.5)*0.01;
 }
 draw(){
-ctx.shadowBlur=30;
-ctx.shadowColor="rgba(255,255,255,0.8)";
-ctx.fillStyle=`rgba(255, 255, 255, ${this.alpha})`;
+let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
+gradient.addColorStop(0, `rgba(255, 255, 255, ${this.alpha})`);
+gradient.addColorStop(0.3, `rgba(255, 255, 255, ${this.alpha * 0.6})`);
+gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+ctx.fillStyle = gradient;
 ctx.beginPath();
-ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
 ctx.fill();
 }
 update(){
 this.x+=this.vX;
 this.y+=this.vY;
 this.r+=this.growth;
-if(this.r>60||this.r<15)this.growth*=-1;
-if(this.x<0||this.x>w)this.vX*=-1;
-if(this.y<0||this.y>h)this.vY*=-1;
+if(this.r>100||this.r<30)this.growth*=-1;
+if(this.x<-this.r)this.x=w+this.r;
+if(this.x>w+this.r)this.x=-this.r;
+if(this.y<-this.r)this.y=h+this.r;
+if(this.y>h+this.r)this.y=-this.r;
 }
 }
 
 const circles=[];
-for(let i=0;i<25;i++)circles.push(new Circle());
+for(let i=0;i<18;i++)circles.push(new Circle());
 
 function animate(){
 ctx.clearRect(0,0,w,h);
