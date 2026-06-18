@@ -6,16 +6,60 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="images/favicon.png">
 <style>
-body{margin:0;padding:50px;font-family:'JetBrains Mono',monospace;display:flex;justify-content:center;align-items:flex-start;color:#fff;transition:background 0.5s ease;position:relative;overflow-x:hidden}
+html{scroll-behavior:smooth}
+body{margin:0;padding:50px;font-family:'JetBrains Mono',monospace;display:flex;justify-content:center;align-items:flex-start;color:#fff;transition:background 0.5s ease, color 0.5s ease;position:relative;overflow-x:hidden}
+body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");z-index:999;pointer-events:none}
 #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+
+
+::-webkit-scrollbar {width: 8px;}
+::-webkit-scrollbar-track {background: rgba(0, 0, 0, 0.1); border-radius: 10px;}
+::-webkit-scrollbar-thumb {background: var(--theme-glow, #ff00ff); border-radius: 10px; box-shadow: 0 0 5px var(--theme-glow, #ff00ff); transition: background 0.5s;}
+::-webkit-scrollbar-thumb:hover {filter: brightness(1.2);}
+
+
+.theme-toggle-btn {position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-weight: 700; color: #fff; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3);}
+.theme-toggle-btn:hover {transform: translateY(-2px); background: rgba(255, 255, 255, 0.12); border-color: var(--theme-glow, #fff); box-shadow: 0 0 6px var(--theme-toggle-glow, rgba(255,255,255,0.2));}
+.theme-toggle-btn:active {transform: translateY(0);}
+
 .card{border-radius:25px;padding:50px;max-width:1200px;width:90%;animation:fadeInCard 1s ease forwards;line-height:1.5;transition:background 0.5s ease,box-shadow 0.5s ease;position:relative;z-index:1;backdrop-filter:blur(5px)}
 @keyframes fadeInCard{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-h1,h2{margin-bottom:40px;transition:color 0.5s ease,text-shadow 0.5s ease}
-h1{font-size:3rem;text-align:center;font-weight:900}
-h2{font-size:2rem;margin-top:30px;margin-bottom:20px;font-weight:700}
-.command{font-weight:700;font-size:1.1rem;display:block;margin-top:20px;transition:color 0.5s ease,text-shadow 0.5s ease}
-.desc{margin-left:20px;color:#f5f5f5;white-space:pre-line}
-li{opacity:0;transform:translateY(15px);animation:fadeInText 0.6s forwards;margin-bottom:10px}
+
+
+.header-container {
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+    padding: 20px 30px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.header-tag {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    opacity: 0.4;
+    margin-bottom: 8px;
+    font-weight: 400;
+}
+
+
+h1,h2{transition:color 0.3s ease,text-shadow 0.3s ease,transform 0.3s ease,filter 0.3s ease;display:block;background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+h1{font-size:2.6rem;text-align:center;font-weight:900;margin:0;letter-spacing: 1px;}
+h2{font-size:2rem;margin-top:40px;margin-bottom:20px;font-weight:700;transform-origin:left center}
+h1:hover{transform:scale(1.01);filter:brightness(1.25)}
+h2:hover{transform:scale(1.03);filter:brightness(1.25)}
+
+ul{list-style:none;padding:0}
+li{opacity:0;transform:translateY(15px);animation:fadeInText 0.6s forwards;margin-bottom:15px;padding:10px 15px;border-radius:12px;transition:transform 0.3s ease, opacity 0.3s ease, background 0.3s ease; background: rgba(255,255,255,0);}
+li:hover{transform:translateX(5px); background: rgba(255, 255, 255, 0.03);}
+
 @keyframes fadeInText{to{opacity:1;transform:translateY(0)}}
 li:nth-child(1){animation-delay:0.3s}
 li:nth-child(2){animation-delay:0.4s}
@@ -25,31 +69,42 @@ li:nth-child(5){animation-delay:0.7s}
 li:nth-child(6){animation-delay:0.8s}
 li:nth-child(7){animation-delay:0.9s}
 li:nth-child(8){animation-delay:1s}
+
+.command{font-weight:700;font-size:1.1rem;display:inline-block;transition:color 0.3s ease,text-shadow 0.3s ease,transform 0.3s ease}
+.desc{margin-left:20px;color:var(--text-desc, #f5f5f5);white-space:pre-line;transition:color 0.3s ease;margin-top:5px}
+li:hover .desc{color:var(--text-desc-hover, #ffffff)}
 </style>
 </head>
 <body>
+<button class="theme-toggle-btn" onclick="nextTheme()">Тема: Загрузка... </button>
+
 <canvas id="bg-canvas"></canvas>
 <div class="card">
-<h1>СПИСОК КОМАНД И ПРАВИЛА</h1>
+  
+  <div class="header-container">
+    <div class="header-tag">// Справочник команд Bebboty</div>
+    <h1>СПИСОК КОМАНД И ПРАВИЛ</h1>
+  </div>
+
 <h2>Игры</h2>
 <ul>
-<li><span class="command">!реакция</span><div class="desc">- Цель: написать вовремя команду !жми после сигнала "ЖМИ"<br>- Как играть: напиши !реакция, дождись сигнала, потом сразу пиши команду !жми<br>- Условия побены: успел за 1 секунду — +1 победа<br>- Проигрыш: слишком рано или медленно - наказание <br>- КД: 7 минут между играми</div></li>
+<li><span class="command">!реакция</span><div class="desc">- Цель: написать вовремя команду !жми после сигнала "ЖМИ"<br>- Как играть: напиши !реакция, дождись сигнала, потом сразу пиши команду !жми<br>- Условия победы: успел за 1 секунду — +1 победа<br>- Проигрыш: слишком рано или медленно - наказание <br>- КД: 7 минут между играми</div></li>
 <li><span class="command">!точность</span><div class="desc">- Цель: угадать загаданное ботом число от 1 до 100<br>- Как играть: напиши !точность, бот загадает число от 1 до 100, затем пиши команду !число &lt;твое число&gt;<br>- Победа: (разница 7) +1 победа, (разница 5) +2 победы, (разница 3) +3 победы, (разница 0) +5 побед<br>- Проигрыш: разница больше 7 — мут на 1 минуту<br>- КД: 5 минут между играми</div></li>
 <li><span class="command">!слоты</span><div class="desc">- Как играть: напиши !слоты, бот случайным образом выбирает три ника из зрителей в чате<br>- Победа: если все три выбранных ника совпадают — +10 побед<br>- Проигрыш: если комбинация не совпала — проигрыш<br>- Особенности: система полностью случайная, зависит от текущих зрителей в чате<br>- КД: 10 секунд</div></li>
 <li><span class="command">!blackjack</span><div class="desc">- Игра против дилера, цель набрать очки как можно ближе к 21, не перебрав очки<br>- Команды внутри игры: !hit — взять ещё карту, !stand — остановиться и сравнить с дилером<br>- Победа: ваши очки больше дилера или дилер перебрал — +1 победа<br>- Проигрыш: если дилер выигрывает — -1 победа + наказание <br>- КД: 10 минут между играми</div></li>
-<li><span class="command">!drunk</span><div class="desc">- Случайное событие, которое может быть хорошим или плохим<br>- Победа: удачное событие — +1 победа<br>- Проигрыш: неудачное событие — -1 победа + наказание<br>- КД: 1 час между использованием</div></li>
+<li><span class="command">!drunk</span><div class="desc">- Случайное событие, которое может быть хорошим или плохому<br>- Победа: удачное событие — +1 победа<br>- Проигрыш: неудачное событие — -1 победа + наказание<br>- КД: 1 час между использованием</div></li>
 <li><span class="command">!пиво</span><div class="desc">- Цель: выполнить случайное задание, чтобы не "спиться"<br>- Как играть: напиши !пиво, бот предложит задание: • посчитать количество символов • написать слово наоборот • решить математический пример • посчитать букву в тексте • написать несколько букв подряд<br>- Победа: правильный ответ — +1 победа<br>- Проигрыш: неверный ответ или время вышло — наказание<br>- КД: 7 минут между играми</div></li>
-<li><span class="command">!смайл</span><div class="desc">- Что делает: твой персональный "эмоут дня" на основе 7tv смайлов канала<br>- Обнуление: таймер сбрасывается ровно в 00:00 по МСК.  
-<li><span class="command">!crocodile (!старт, !крокодил, !start)</span><div class="desc">- Как играть: напиши !старт, чтобы начать игру<br>- Количество игроков: минимум 3<br>- Правила: одному из игроков выпадает слово, которое ему нужно объяснить за 1 минуту<br>- Награда: за верное объяснение и угадывание слова начисляется 10 побед  
-<li><span class="command">!quiz (!квиз)</span><div class="desc">- Что делает: любой из смельчаков кидает вызов любому чаттеру с помощью команды !quiz [ник]. Для ответа команда !answer. Тот, кто первый выберет правильный вариант, получает 5 побед. 
+<li><span class="command">!смайл</span><div class="desc">- Что делает: твой персональный "эмоут дня" на основе 7tv смайлов канала<br>- Обнуление: таймер сбрасывается ровно в 00:00 по МСК.</div></li>  
+<li><span class="command">!crocodile (!старт, !крокодил, !start)</span><div class="desc">- Как играть: напиши !старт, чтобы начать игру<br>- Количество игроков: минимум 3<br>- Правила: одному из игроков выпадает слово, которое ему нужно объяснить за 1 минуту<br>- Награда: за верное объяснение и угадывание слова начисляется 10 побед</div></li>  
+<li><span class="command">!quiz (!квиз)</span><div class="desc">- Что делает: любой из смельчаков кидает вызов любому чаттеру с помощью команды !quiz [ник]. Для ответа команда !answer. Тот, кто первый выберет правильный вариант, получает 5 побед.</div></li> 
 </ul>
 <h2>Статистика</h2>
 <ul>
-<li><span class="command">!wins (!победы)</span><div class="desc">- Отображает топ-чаттеров с наибольшим количеством побед<br>- Позволяет увидеть, кто лидирует в мини-играх<br>- Победы обновляются автоматически после каждой игры</div></li>
-<li><span class="command">!box (!бокс)</span><div class="desc">- Что делает: открывает призовой бокс с уникальным случайным эмодзи<br>- Как использовать: напиши !box, чтобы забрать свою награду за повышение ранга<br>- Правила получения:<br>1) Один ранг - один бокс. Ты получаешь право открыть бокс только после того, как использовал команду !rank up и перешел на новый ранг<br>2) Выпавший эмодзи кладется в твой личный !инвентарь
-<li><span class="command">!inventory (!инвентарь)</span><div class="desc">- Что делает: открывает твой личный инвентарь со всеми собранными эмодзи
-<li><span class="command">!emoji (!set)</span><div class="desc">- Что делает: устанавливает выбранный эмодзи из инвентаря<br>- Пример: !emoji 🔥
-<li><span class="command">!rank (!ранг)</span><div class="desc">- Что делает: показывает текущий статус на канале, количество накопленных побед и возможность получения награды<br>- Как использовать:<br>!rank  - проверить свой ранг, количество побед и доступность команды !box<br>!rank up - повысить свой ранг, если накоплено достаточно побед<br>- Система прогресса: Начиная с ранга "***" (1 ранг) каждое повышение открывает доступ к команде !box, где открывается уникальный смайлик
+<li><span class="command">!wins (!победы)</span><div class="desc">- Отображает топ-чаттеров с наибольшим количеством побед<br>- Позволяет увидеть, кто лидирует в мини-игры<br>- Победы обновляются автоматически после каждой игры</div></li>
+<li><span class="command">!box (!бокс)</span><div class="desc">- Что делает: открывает призовой бокс с уникальным случайным эмодзи<br>- Как использовать: напиши !box, чтобы забрать свою награду за повышение ранга<br>- Правила получения:<br>1) Один ранг - один бокс. Ты получаешь право открыть бокс только после того, как использовал команду !rank up и перешел на новый ранг<br>2) Выпавший эмодзи кладется в твой личный !инвентарь</div></li>
+<li><span class="command">!inventory (!инвентарь)</span><div class="desc">- Что делает: открывает твой личный инвентарь со всеми собранными эмодзи</div></li>
+<li><span class="command">!emoji (!set)</span><div class="desc">- Что делает: устанавливает выбранный эмодзи из инвентаря<br>- Пример: !emoji 🔥</div></li>
+<li><span class="command">!rank (!ранг)</span><div class="desc">- Что делает: показывает текущий статус на канале, количество накопленных побед и возможность получения награды<br>- Как использовать:<br>!rank  - проверить свой ранг, количество побед и доступность команды !box<br>!rank up - повысить свой ранг, если накоплено достаточно побед<br>- Система прогресса: Начиная с ранга "***" (1 ранг) каждое повышение открывает доступ к команде !box, где открывается уникальный смайлик</div></li>
 </ul>
 <h2>Крутые команды</h2>
 <ul>
@@ -59,29 +114,124 @@ li:nth-child(8){animation-delay:1s}
 <li><span class="command">!sa (!sub)</span><div class="desc">- Что делает: показывает стаж платной подписки пользователя на канал </div></li>  
 <li><span class="command">!holidays (!праздник)</span><div class="desc">- Что делает: Выводит список всех праздников, знаменательных событий и необычных дат, которые отмечаются сегодня во всём мире </div></li>    
 <li><span class="command">!color </span><div class="desc">- Что делает: Показывает HEX-код твоего цвета и дает ему уникальное (иногда обидное) название<br>- Как использовать: !color @user - узнать, что за оттенок у другого чаттера  </div></li> 
-<li><span class="command">!profile</span><div class="desc">- Что делает: Показывает вашу статистику, ранги и накопленные достижения
-<li><span class="command">!qs(!?)</span><div class="desc">- Ответьте на парочку вопросов чтобы стать лучшей версией себя. 
+<li><span class="command">!profile</span><div class="desc">- Что делает: Показывает вашу статистику, ранги и накопленные достижения</div></li>
+<li><span class="command">!qs(!?)</span><div class="desc">- Ответьте на парочку вопросов чтобы стать лучшей версией себя.</div></li> 
 </ul>
 <h2>Полезные команды</h2>
 <ul>
-<li><span class="command">!link</span><div class="desc">- Что делает: Позволяет создавать, удалять и спамить кастомные команды<br>- Как использовать: !link [название] [текст]. Для удаления: !link del [название команды]
+<li><span class="command">!link</span><div class="desc">- Что делает: Позволяет создавать, удалять и спамить кастомные команды<br>- Как использовать: !link [название] [текст]. Для удаления: !link del [название команды]</div></li>
   
 </ul>
 </div>
 <script>
-const themes=[{bgBody:"#1a0a0a",cardGradient:"linear-gradient(145deg, #2a0a0a, #4b0f0f)",glow:"0 0 2px #ff0000",glowSizeCommand:"0 0 1.5px",command:"#ff4545",h1:"#ff3b3b",h2:"#ff7f50",h2Shadow:"0 0 2px #ff0000, 1px 1px 2px #000"},{bgBody:"#1b001b",cardGradient:"linear-gradient(145deg, #2a002a, #4b004b)",glow:"0 0 2px #ff00ff",glowSizeCommand:"0 0 1.5px",command:"#ff99ff",h1:"#ff99ff",h2:"#ff66cc",h2Shadow:"0 0 2px #ff66ff, 1px 1px 2px #000"},{bgBody:"#0a1a2a",cardGradient:"linear-gradient(145deg, #0d1a33, #1a3a6a)",glow:"0 0 2px #00ccff",glowSizeCommand:"0 0 3px",command:"#00ccff",h1:"#66f0ff",h2:"#33ccff",h2Shadow:"0 0 2px #00ccff, 1px 1px 2px #000"}];
-const theme=themes[Math.floor(Math.random()*themes.length)];
-document.body.style.background=theme.bgBody;
-const card=document.querySelector('.card');
-card.style.background=theme.cardGradient;
-card.style.boxShadow=theme.glow;
-document.querySelectorAll('h1').forEach(el=>{el.style.color=theme.h1;el.style.textShadow=theme.glow});
-document.querySelectorAll('h2').forEach(el=>{el.style.color=theme.h2;el.style.textShadow=theme.h2Shadow});
-document.querySelectorAll('.command').forEach(el=>{el.style.color=theme.command;el.style.textShadow=theme.glowSizeCommand+" "+theme.command});
+
+const themes=[
+  {
+    name: "Blue",
+    bgBody:"#0a1a2a",
+    cardGradient:"linear-gradient(145deg, #0d1a33, #1a3a6a)",
+    glow:"0 0 15px rgba(0, 204, 255, 0.4)",
+    glowSizeCommand:"0 0 3px",
+    command:"#00ccff",
+    h2Shadow:"0 0 2px #00ccff, 1px 1px 2px #000",
+    hGradient:"linear-gradient(to right, #66f0ff, #33ccff)",
+    btnGlow: "rgba(0, 204, 255, 0.25)"
+  },
+  {
+    name: "Bolotny",
+    bgBody:"#1c2116",
+    cardGradient:"linear-gradient(145deg, #252c1e, #3a4430)",
+    glow:"0 0 15px rgba(172, 183, 142, 0.3)",
+    glowSizeCommand:"0 0 2px",
+    command:"#ACB78E",
+    h2Shadow:"0 0 2px #ACB78E, 1px 1px 2px #000",
+    hGradient:"linear-gradient(to right, #c2cca6, #ACB78E)",
+    btnGlow: "rgba(172, 183, 142, 0.2)"
+  },
+  {
+    name: "Violet",
+    bgBody:"#1a1220",
+    cardGradient:"linear-gradient(145deg, #261b30, #3d2a4d)",
+    glow:"0 0 15px rgba(201, 160, 220, 0.4)",
+    glowSizeCommand:"0 0 2px",
+    command:"#C9A0DC",
+    h2Shadow:"0 0 2px #C9A0DC, 1px 1px 2px #000",
+    hGradient:"linear-gradient(to right, #dfc2f0, #C9A0DC)",
+    btnGlow: "rgba(201, 160, 220, 0.25)"
+  },
+  {
+    name: "Midnight",
+    bgBody:"#080808",
+    cardGradient:"linear-gradient(145deg, #121212, #1c1c1c)",
+    glow:"0 0 25px rgba(255, 255, 255, 0.04)",
+    glowSizeCommand:"0 0 2px",
+    command:"#ffffff",
+    h2Shadow:"none",
+    hGradient:"linear-gradient(to right, #ffffff, #dcdcdc)",
+    btnGlow: "rgba(255, 255, 255, 0.15)"
+  }
+];
+
+let currentThemeIndex = 0;
+
+function applyTheme(theme) {
+    document.documentElement.style.setProperty('--theme-glow', theme.command);
+    document.documentElement.style.setProperty('--theme-toggle-glow', theme.btnGlow);
+
+    document.body.style.background = theme.bgBody;
+    
+    const card = document.querySelector('.card');
+    card.style.background = theme.cardGradient;
+    card.style.boxShadow = theme.glow;
+
+    const toggleBtn = document.querySelector('.theme-toggle-btn');
+    toggleBtn.innerText = `Тема: ${theme.name} `;
+
+    document.querySelectorAll('h1').forEach(el=>{
+        el.style.backgroundImage = theme.hGradient;
+        if (theme.name === "Violet") {
+            el.style.textShadow = "0 0 25px rgba(201, 160, 220, 0.25)";
+        } else {
+            el.style.textShadow = theme.name === "Midnight" ? "none" : theme.glow;
+        }
+    });
+    document.querySelectorAll('h2').forEach(el=>{
+        el.style.backgroundImage = theme.hGradient;
+        el.style.textShadow = theme.h2Shadow;
+    });
+    document.querySelectorAll('.command').forEach(el=>{
+        el.style.color = theme.command;
+        el.style.textShadow = theme.glowSizeCommand+" "+theme.command;
+    });
+    
+    const headerContainer = document.querySelector('.header-container');
+    if (headerContainer) {
+        headerContainer.style.borderColor = theme.name === 'Midnight' ? 'rgba(255,255,255, 0.12)' : 'rgba(255,255,255, 0.08)';
+    }
+}
+
+function nextTheme() {
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    applyTheme(themes[currentThemeIndex]);
+}
+
+currentThemeIndex = Math.floor(Math.random() * themes.length);
+applyTheme(themes[currentThemeIndex]);
+
+document.querySelectorAll('li').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+        const cmd=el.querySelector('.command');
+        if(cmd)cmd.style.transform='scale(1.03)';
+    });
+    el.addEventListener('mouseleave',()=>{
+        const cmd=el.querySelector('.command');
+        if(cmd)cmd.style.transform='scale(1)';
+    })
+});
 
 const canvas=document.getElementById("bg-canvas"),ctx=canvas.getContext("2d");
 let w=canvas.width=window.innerWidth,h=canvas.height=window.innerHeight;
-window.addEventListener("resize",()=>{w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;});
+window.addEventListener("resize",()=>{w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight});
 
 class Circle{
 constructor(){
@@ -98,7 +248,6 @@ let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.
 gradient.addColorStop(0, `rgba(255, 255, 255, ${this.alpha})`);
 gradient.addColorStop(0.4, `rgba(255, 255, 255, ${this.alpha * 0.5})`);
 gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-
 ctx.fillStyle = gradient;
 ctx.beginPath();
 ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
@@ -116,14 +265,69 @@ if(this.y>h+this.r)this.y=-this.r;
 }
 }
 
-const circles=[];
-for(let i=0;i<8;i++)circles.push(new Circle());
+class Meteor {
+constructor() {
+this.reset();
+}
+reset() {
+this.x = Math.random() * (w * 0.5) - w * 0.1;
+this.y = Math.random() * (-h * 0.2) - 50;
+this.length = Math.random() * 80 + 60;
+this.speed = Math.random() * 3 + 6;
+this.alpha = 1;
+this.active = false;
+}
+draw() {
+if (!this.active) return;
+let grad = ctx.createLinearGradient(this.x, this.y, this.x - this.length, this.y - this.length);
+grad.addColorStop(0, `rgba(255, 255, 255, ${this.alpha})`);
+grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+ctx.strokeStyle = grad;
+ctx.lineWidth = 1.8;
+ctx.beginPath();
+ctx.moveTo(this.x, this.y);
+ctx.lineTo(this.x - this.length, this.y - this.length);
+ctx.stroke();
+}
+update() {
+if (!this.active) return;
+this.x += this.speed;
+this.y += this.speed;
+if (this.x > w + this.length || this.y > h + this.length) {
+this.active = false;
+}
+}
+}
+
+const circles = [];
+for(let i=0;i<13;i++)circles.push(new Circle());
+
+const meteors = [];
+for(let i=0;i<4;i++)meteors.push(new Meteor());
+
+function launchWave() {
+const count = Math.floor(Math.random() * 4) + 1;
+let activeCount = 0;
+meteors.forEach(m => {
+if(!m.active && activeCount < count) {
+m.reset();
+setTimeout(() => { m.active = true; }, Math.random() * 600);
+activeCount++;
+}
+});
+setTimeout(launchWave, Math.random() * 12000 + 8000);
+}
+setTimeout(launchWave, 3000);
 
 function animate(){
 ctx.clearRect(0,0,w,h);
 circles.forEach(c=>{
 c.update();
 c.draw();
+});
+meteors.forEach(m => {
+m.update();
+m.draw();
 });
 requestAnimationFrame(animate);
 }
