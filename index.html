@@ -6,8 +6,9 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="images/favicon.png">
 <style>
-body{margin:0;padding:50px;font-family:'JetBrains Mono',monospace;display:flex;justify-content:center;align-items:flex-start;color:#fff;transition:background 0.5s ease}
-.card{border-radius:25px;padding:50px;max-width:1200px;width:90%;animation:fadeInCard 1s ease forwards;line-height:1.5;transition:background 0.5s ease,box-shadow 0.5s ease}
+body{margin:0;padding:50px;font-family:'JetBrains Mono',monospace;display:flex;justify-content:center;align-items:flex-start;color:#fff;transition:background 0.5s ease;position:relative;overflow-x:hidden}
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.card{border-radius:25px;padding:50px;max-width:1200px;width:90%;animation:fadeInCard 1s ease forwards;line-height:1.5;transition:background 0.5s ease,box-shadow 0.5s ease;position:relative;z-index:1;backdrop-filter:blur(5px)}
 @keyframes fadeInCard{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 h1,h2{margin-bottom:40px;transition:color 0.5s ease,text-shadow 0.5s ease}
 h1{font-size:3rem;text-align:center;font-weight:900}
@@ -27,6 +28,7 @@ li:nth-child(8){animation-delay:1s}
 </style>
 </head>
 <body>
+<canvas id="bg-canvas"></canvas>
 <div class="card">
 <h1>СПИСОК КОМАНД И ПРАВИЛА</h1>
 <h2>Игры</h2>
@@ -76,6 +78,51 @@ card.style.boxShadow=theme.glow;
 document.querySelectorAll('h1').forEach(el=>{el.style.color=theme.h1;el.style.textShadow=theme.glow});
 document.querySelectorAll('h2').forEach(el=>{el.style.color=theme.h2;el.style.textShadow=theme.h2Shadow});
 document.querySelectorAll('.command').forEach(el=>{el.style.color=theme.command;el.style.textShadow=theme.glowSizeCommand+" "+theme.command});
+
+const canvas=document.getElementById("bg-canvas"),ctx=canvas.getContext("2d");
+let w=canvas.width=window.innerWidth,h=canvas.height=window.innerHeight;
+window.addEventListener("resize",()=>{w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;});
+
+class Circle{
+constructor(){
+this.x=Math.random()*w;
+this.y=Math.random()*h;
+this.r=Math.random()*40+20;
+this.vX=(Math.random()-0.5)*0.5;
+this.vY=(Math.random()-0.5)*0.5;
+this.alpha=Math.random()*0.15+0.05;
+this.growth=(Math.random()-0.5)*0.01;
+}
+draw(){
+ctx.shadowBlur=30;
+ctx.shadowColor="rgba(255,255,255,0.8)";
+ctx.fillStyle=`rgba(255, 255, 255, ${this.alpha})`;
+ctx.beginPath();
+ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+ctx.fill();
+}
+update(){
+this.x+=this.vX;
+this.y+=this.vY;
+this.r+=this.growth;
+if(this.r>60||this.r<15)this.growth*=-1;
+if(this.x<0||this.x>w)this.vX*=-1;
+if(this.y<0||this.y>h)this.vY*=-1;
+}
+}
+
+const circles=[];
+for(let i=0;i<25;i++)circles.push(new Circle());
+
+function animate(){
+ctx.clearRect(0,0,w,h);
+circles.forEach(c=>{
+c.update();
+c.draw();
+});
+requestAnimationFrame(animate);
+}
+animate();
 </script>
 </body>
 </html>
