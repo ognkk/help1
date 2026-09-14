@@ -2,54 +2,89 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>HELP 💦</title>
+<title>BEBBOTY // Справочник</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="images/favicon.png">
 <style>
 html{scroll-behavior:smooth}
-body{margin:0;padding:50px;font-family:'JetBrains Mono',monospace;display:flex;justify-content:center;align-items:flex-start;color:#fff;transition:background 0.5s ease, color 0.5s ease;position:relative;overflow-x:hidden;zoom:0.9;-moz-transform:scale(0.9);-moz-transform-origin:top center}
+body{margin:0;padding:50px 20px;font-family:'JetBrains Mono',monospace;display:flex;justify-content:center;align-items:flex-start;color:#fff;transition:background 0.5s ease, color 0.5s ease;position:relative;overflow-x:hidden}
 body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");z-index:999;pointer-events:none}
 #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none}
 
+/* Эффект волны/кольца при клике */
+.click-ripple {
+    position: fixed;
+    border: 2px solid var(--theme-glow, #fff);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: rippleEffect 0.6s cubic-bezier(0, 0.2, 0.8, 1) forwards;
+    pointer-events: none;
+    z-index: 9999;
+}
+@keyframes rippleEffect {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; box-shadow: 0 0 10px var(--theme-glow, #fff); }
+    100% { transform: translate(-50%, -50%) scale(4); opacity: 0; box-shadow: 0 0 30px var(--theme-glow, #fff); }
+}
+
 ::-webkit-scrollbar {width: 8px;}
 ::-webkit-scrollbar-track {background: rgba(0, 0, 0, 0.1); border-radius: 10px;}
-::-webkit-scrollbar-thumb {background: var(--theme-glow, #ff00ff); border-radius: 10px; box-shadow: 0 0 5px var(--theme-glow, #ff00ff); transition: background 0.5s;}
+::-webkit-scrollbar-thumb {background: var(--theme-glow, #ff00ff); border-radius: 10px; box-shadow: 0 0 8px var(--theme-glow, #ff00ff); transition: background 0.5s;}
 ::-webkit-scrollbar-thumb:hover {filter: brightness(1.2);}
 
-.theme-toggle-btn {position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-weight: 700; color: #fff; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3);}
-.theme-toggle-btn:hover {transform: translateY(-2px); background: rgba(255, 255, 255, 0.12); border-color: var(--theme-glow, #fff); box-shadow: 0 0 6px var(--theme-toggle-glow, rgba(255,255,255,0.2));}
+.theme-toggle-btn {position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700; color: #fff; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; cursor: pointer; backdrop-filter: blur(12px); transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.4);}
+.theme-toggle-btn:hover {transform: translateY(-2px); background: rgba(255, 255, 255, 0.08); border-color: var(--theme-glow, #fff); box-shadow: 0 0 12px var(--theme-toggle-glow, rgba(255,255,255,0.25));}
 .theme-toggle-btn:active {transform: translateY(0);}
 
-.card{border-radius:25px;padding:50px;max-width:1200px;width:90%;animation:fadeInCard 1s ease forwards;line-height:1.5;transition:background 0.5s ease,box-shadow 0.5s ease;position:relative;z-index:1;backdrop-filter:blur(5px)}
+.card{border-radius:25px;padding:40px;max-width:1000px;width:92%;animation:fadeInCard 1s ease forwards;line-height:1.5;transition:background 0.5s ease,box-shadow 0.5s ease;position:relative;z-index:1;backdrop-filter:blur(10px);border: 1px solid rgba(255,255,255,0.06)}
 @keyframes fadeInCard{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
-.header-container {text-align: center; margin-bottom: 50px; position: relative; padding: 20px 30px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; display: inline-block; left: 50%; transform: translateX(-50%); box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);}
+.header-container {text-align: center; margin-bottom: 40px; position: relative; padding: 25px; background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 16px; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);}
 .header-tag {font-size: 0.75rem; text-transform: uppercase; letter-spacing: 4px; opacity: 0.4; margin-bottom: 8px; font-weight: 400;}
-.system-time {display: block; margin-top: 15px; font-size: 0.65rem; color: rgba(255, 255, 255, 0.4); letter-spacing: 3px; text-transform: uppercase;}
+.system-time {display: block; margin-top: 12px; font-size: 0.65rem; color: rgba(255, 255, 255, 0.4); letter-spacing: 3px; text-transform: uppercase;}
 
 h1,h2{transition:color 0.3s ease,text-shadow 0.3s ease,transform 0.3s ease,filter 0.3s ease;display:block;background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
-h1{font-size:2.6rem;text-align:center;font-weight:900;margin:0;letter-spacing: 1px;}
-h2{font-size:2rem;margin-top:40px;margin-bottom:20px;font-weight:700;transform-origin:left center}
-h1:hover{transform:scale(1.01);filter:brightness(1.25)}
-h2:hover{transform:scale(1.03);filter:brightness(1.25)}
+h1{font-size:2.4rem;text-align:center;font-weight:900;margin:0;letter-spacing: 1px;}
 
-ul{list-style:none;padding:0}
-li{opacity:0;transform:translateY(15px);animation:fadeInText 0.6s forwards;margin-bottom:15px;padding:10px 15px;border-radius:12px;transition:transform 0.3s ease, opacity 0.3s ease, background 0.3s ease; background: rgba(255,255,255,0);}
-li:hover{transform:translateX(5px); background: rgba(255, 255, 255, 0.03);}
+h2{
+    font-size: 1.25rem;
+    margin-top: 50px;
+    margin-bottom: 25px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+h2::before, h2::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, var(--theme-glow, #fff), transparent);
+    opacity: 0.3;
+}
+
+ul{list-style:none;padding:0;display: flex;flex-direction: column;gap: 12px;}
+li{opacity:0;transform:translateY(15px);animation:fadeInText 0.6s forwards;padding: 14px 18px;border-radius: 14px;transition:all 0.3s ease; background: rgba(255, 255, 255, 0.015); border: 1px solid rgba(255, 255, 255, 0.03);}
+li:hover{transform:translateX(4px); background: rgba(255, 255, 255, 0.035); border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 4px 20px rgba(0,0,0,0.2);}
 
 @keyframes fadeInText{to{opacity:1;transform:translateY(0)}}
-li:nth-child(1){animation-delay:0.3s}
-li:nth-child(2){animation-delay:0.4s}
-li:nth-child(3){animation-delay:0.5s}
-li:nth-child(4){animation-delay:0.6s}
-li:nth-child(5){animation-delay:0.7s}
-li:nth-child(6){animation-delay:0.8s}
-li:nth-child(7){animation-delay:0.9s}
-li:nth-child(8){animation-delay:1s}
+li:nth-child(1){animation-delay:0.1s}
+li:nth-child(2){animation-delay:0.2s}
+li:nth-child(3){animation-delay:0.3s}
+li:nth-child(4){animation-delay:0.4s}
+li:nth-child(5){animation-delay:0.5s}
+li:nth-child(6){animation-delay:0.6s}
+li:nth-child(7){animation-delay:0.7s}
+li:nth-child(8){animation-delay:0.8s}
 
-.command{font-weight:700;font-size:1.1rem;display:inline-block;transition:color 0.3s ease,text-shadow 0.3s ease,transform 0.3s ease}
-.desc{margin-left:20px;color:var(--text-desc, #f5f5f5);white-space:pre-line;transition:color 0.3s ease;margin-top:5px}
-li:hover .desc{color:var(--text-desc-hover, #ffffff)}
+.command{font-weight:700;font-size:1.05rem;display:inline-block;cursor:pointer;transition:all 0.2s ease;}
+.command:hover{filter:brightness(1.25);transform: scale(1.02);}
+.desc{margin-left:0;color:var(--text-desc, #e0e0e0);white-space:pre-line;transition:color 0.3s ease;margin-top:6px;font-size: 0.9rem;opacity: 0.85;}
+li:hover .desc{opacity: 1;}
 
 .badge-new {font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; padding: 2px 6px; border-radius: 6px; margin-left: 10px; vertical-align: middle; display: inline-block; background: rgba(255, 255, 255, 0.07); border: 1px solid #ffffff; color: #ffffff; box-shadow: 0 0 10px rgba(255, 255, 255, 0.25); animation: pulseNew 2s infinite ease-in-out;}
 .badge-cd {font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 6px; margin-left: 10px; vertical-align: middle; display: inline-block; background: rgba(255, 165, 0, 0.05); border: 1px solid #ffa500; color: #ffa500; box-shadow: 0 0 6px rgba(255, 165, 0, 0.15);}
@@ -57,15 +92,16 @@ li:hover .desc{color:var(--text-desc-hover, #ffffff)}
 .badge-mod {font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 6px; margin-left: 10px; vertical-align: middle; display: inline-block; background: rgba(255, 0, 0, 0.1); border: 1px solid #ff4a4a; color: #ff4a4a; box-shadow: 0 0 8px rgba(255, 74, 74, 0.2);}
 
 [data-tooltip] {position: relative; cursor: help;}
-[data-tooltip]::after {content: attr(data-tooltip); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%) translateY(5px); background: rgba(10, 10, 10, 0.95); border: 1px solid rgba(255, 255, 255, 0.15); color: #ffffff; padding: 5px 10px; font-size: 0.7rem; font-weight: 400; letter-spacing: 0; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); z-index: 100; font-family: 'JetBrains Mono', monospace;}
+[data-tooltip]::after {content: attr(data-tooltip); position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%) translateY(5px); background: rgba(12, 12, 12, 0.95); border: 1px solid rgba(255, 255, 255, 0.12); color: #fff; padding: 5px 10px; font-size: 0.65rem; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); z-index: 100;}
 [data-tooltip]:hover::after {opacity: 1; transform: translateX(-50%) translateY(0);}
 @keyframes pulseNew {0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.03); }}
 </style>
 </head>
 <body>
-<button class="theme-toggle-btn" onclick="nextTheme()">Тема: Загрузка... </button>
 
+<button class="theme-toggle-btn" onclick="nextTheme()">Тема: Загрузка...</button>
 <canvas id="bg-canvas"></canvas>
+
 <div class="card">
   <div class="header-container">
     <div class="header-tag">// Справочник команд Bebboty</div>
@@ -75,15 +111,16 @@ li:hover .desc{color:var(--text-desc-hover, #ffffff)}
 
 <h2>Игры</h2>
 <ul>
-<li><span class="command">!реакция</span><span class="badge-cd" data-tooltip="Перезарядка команды">7 мин КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Цель: написать вовремя команду !жми после сигнала "ЖМИ"<br>- Как играть: напиши !реакция, дождись сигнала, потом сразу пиши команду !жми<br>- Условия победы: успел за 1 секунду — +5 побед<br>- Проигрыш: слишком рано или медленно - наказание <br></li>
-<li><span class="command">!точность</span><span class="badge-cd" data-tooltip="Перезарядка команды">5 мин КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Цель: угадать загаданное ботом число от 1 до 100<br>- Как играть: напиши !точность, бот загадает число от 1 до 100, затем пиши команду !число &lt;твое число&gt;<br>- Победа: (разница 7) +5 побед, (разница 5) +10 побед, (разница 3) +15 побед, (разница 0) +20 побед<br>- Проигрыш: разница больше 7 — мут на 1 минуту<br></li>
+<li><span class="command">!реакция</span><span class="badge-cd" data-tooltip="Перезарядка команды">7 мин КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Цель: написать вовремя команду !жми после сигнала "ЖМИ"<br>- Как играть: напиши !реакция, дождись сигнала, потом сразу пиши команду !жми<br>- Условия победы: успел за 1 секунду — +5 побед<br>- Проигрыш: слишком рано или медленно - наказание</div></li>
+<li><span class="command">!точность</span><span class="badge-cd" data-tooltip="Перезарядка команды">5 мин КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Цель: угадать загаданное ботом число от 1 до 100<br>- Как играть: напиши !точность, бот загадает число от 1 до 100, затем пиши команду !число &lt;твое число&gt;<br>- Победа: (разница 7) +5 побед, (разница 5) +10 побед, (разница 3) +15 побед, (разница 0) +20 побед<br>- Проигрыш: разница больше 7 — мут на 1 минуту</div></li>
 <li><span class="command">!слоты</span><span class="badge-cd" data-tooltip="Перезарядка команды">10 сек КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Как играть: напиши !слоты, бот случайным образом выбирает три ника из зрителей в чате<br>- Победа: если все три выбранных ника совпадают — +20 побед<br>- Проигрыш: если комбинация не совпала — проигрыш<br>- Особенности: система полностью случайная, зависит от текущих зрителей в чате<br>- КД: 10 секунд</div></li>
-<li><span class="command">!blackjack</span><span class="badge-cd" data-tooltip="Перезарядка команды">10 мин КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Игра против дилера, цель набрать очки как можно ближе к 21, не перебрав очки<br>- Команды внутри игры: !hit — взять ещё карту, !stand — остановиться и сравнить с дилером<br>- Победа: ваши очки больше дилера или дилер перебрал — +5 побед<br>- Проигрыш: если дилер выигрывает — наказание <br></li>
-<li><span class="command">!пиво</span><span class="badge-cd" data-tooltip="Перезарядка команды">7 мин КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Цель: выполнить случайное задание, чтобы не "спиться"<br>- Как играть: напиши !пиво, бот предложит задание: • посчитать количество символов • написать слово наоборот • решить математический пример • посчитать букву в тексте • написать несколько букв подряд<br>- Победа: правильный ответ — +5 побед<br>- Проигрыш: неверный ответ или время вышло — наказание<br></li>
-<li><span class="command">!смайл</span><span class="badge-cd" data-tooltip="Перезарядка команды">00:00 MSK КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: твой персональный "эмоут дня" на основе 7tv смайлов канала<br></div></li>  
+<li><span class="command">!blackjack</span><span class="badge-cd" data-tooltip="Перезарядка команды">10 мин КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Игра против дилера, цель набрать очки как можно ближе к 21, не перебрав очки<br>- Команды внутри игры: !hit — взять ещё карту, !stand — остановиться и сравнить с дилером<br>- Победа: ваши очки больше дилера или дилер перебрал — +5 побед<br>- Проигрыш: если дилер выигрывает — наказание</div></li>
+<li><span class="command">!пиво</span><span class="badge-cd" data-tooltip="Перезарядка команды">7 мин КД</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Цель: выполнить случайное задание, чтобы не "спиться"<br>- Как играть: напиши !пиво, бот предложит задание: • посчитать количество символов • написать слово наоборот • решить математический пример • посчитать букву в тексте • написать несколько букв подряд<br>- Победа: правильный ответ — +5 побед<br>- Проигрыш: неверный ответ или время вышло — наказание</div></li>
+<li><span class="command">!смайл</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: твой персональный "эмоут дня" на основе 7tv смайлов канала</div></li>  
 <li><span class="command">!crocodile (!старт, !крокодил, !start)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Как играть: напиши !старт, чтобы начать игру<br>- Количество игроков: минимум 3<br>- Правила: одному из игроков выпадает слово, которое ему нужно объяснить за 1 минуту<br>- Награда: за верное объяснение и угадывание слова начисляется 10 побед</div></li>  
 <li><span class="command">!quiz (!квиз)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: любой из смельчаков кидает вызов любому чаттеру с помощью команды !quiz [ник]. Для ответа команда !answer. Тот, кто первый выберет правильный вариант, получает 5 побед.</div></li> 
 </ul>
+
 <h2>Статистика</h2>
 <ul>
 <li><span class="command">!wins (!победы)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Отображает топ-чаттеров с наибольшим количеством побед<br>- Позволяет увидеть, кто лидирует в мини-игры<br>- Победы обновляются автоматически после каждой игры</div></li>
@@ -92,26 +129,29 @@ li:hover .desc{color:var(--text-desc-hover, #ffffff)}
 <li><span class="command">!emoji (!set)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: устанавливает выбранный эмодзи из инвентаря<br>- Пример: !emoji 🔥</div></li>
 <li><span class="command">!rank (!ранг)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: показывает текущий статус на канале, количество накопленных побед и возможность получения награды<br>- Как использовать:<br>!rank  - проверить свой ранг, количество побед и доступность команды !box<br>!rank up - повысить свой ранг, если накоплено достаточно побед<br>- Система прогресса: Начиная с ранга "***" (1 ранг) каждое повышение открывает доступ к команде !box, где открывается уникальный смайлик</div></li>
 </ul>
+
 <h2>Крутые команды</h2>
 <ul>
-<li><span class="command">!гороскоп (!г)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: Показывает ваш САМЫЙ НАСТОЯЩИЙ гороскоп из всех существующих </div></li>
-<li><span class="command">!help</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Показывает этот список команд и правила игр </div></li>
-<li><span class="command">!followage (!fa)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: показывает, как давно пользователь зафолловлен на канал </div></li>
-<li><span class="command">!sa (!sub)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: показывает стаж платной подписки пользователя на канал </div></li>  
-<li><span class="command">!holidays (!праздник)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: Выводит список всех праздников, знаменательных событий и необычных дат, которые отмечаются сегодня во всём мире </div></li>    
-<li><span class="command">!color </span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: Показывает HEX-код твоего цвета и дает ему уникальное (иногда обидное) название<br>- Как использовать: !color @user - узнать, что за оттенок у другого чаттера  </div></li> 
+<li><span class="command">!гороскоп (!г)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: Показывает ваш САМЫЙ НАСТОЯЩИЙ гороскоп из всех существующих</div></li>
+<li><span class="command">!help</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Показывает этот список команд и правила игр</div></li>
+<li><span class="command">!followage (!fa)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: показывает, как давно пользователь зафолловлен на канал</div></li>
+<li><span class="command">!sa (!sub)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: показывает стаж платной подписки пользователя на канал</div></li>  
+<li><span class="command">!holidays (!праздник)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: Выводит список всех праздников, знаменательных событий и необычных дат, которые отмечаются сегодня во всём мире</div></li>    
+<li><span class="command">!color </span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: Показывает HEX-код твоего цвета и дает ему уникальное (иногда обидное) название<br>- Как использовать: !color @user - узнать, что за оттенок у другого чаттера</div></li> 
 <li><span class="command">!profile</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что делает: Показывает вашу статистику, ранги и накопленные достижения</div></li>
 <li><span class="command">!qs(!?)</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Ответьте на парочку вопросов чтобы стать лучшей версией себя.</div></li> 
-<li><span class="command">!moon</span><span class="badge-new" data-tooltip="Недавнее обновление бота">NEW</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Показывает фазу луны, освещенность и знак зодиака. </div></li>
+<li><span class="command">!moon</span><span class="badge-new" data-tooltip="Недавнее обновление бота">NEW</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Показывает фазу луны, освещенность и знак зодиака.</div></li>
 </ul>
+
 <h2>Полезные команды</h2>
 <ul>
 <li><span class="command">!link</span><span class="badge-new" data-tooltip="Недавнее обновление бота">NEW</span><span class="badge-mod" data-tooltip="Доступно только модераторам">MOD</span><div class="desc">- Что делает: Позволяет создавать, удалять и спамить кастомные команды<br>- Как использовать: Для добавления: !link [название команды] [текст]. Для удаления: !link del [название команды]. Для изменения: !link edit [название команды] [новый текст]. Для просмотра всех команд на канале: !linkall</div></li>  
-<li><span class="command">!help</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Справочник команд </div></li>  
-<li><span class="command">!ping</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что показывает: длительность работы бота и его присутствие в чате</div></li>    
-
+<li><span class="command">!help</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Справочник команд</div></li>  
+<li><span class="command">!ping</span><span class="badge-all" data-tooltip="Доступно всем зрителям">ALL</span><div class="desc">- Что показывает: длительность работы бота и его присутствие в чате</div></li>     
 </ul>
+
 </div>
+
 <script>
 const themes=[
   {
@@ -204,10 +244,20 @@ updateTime();
 currentThemeIndex = 2; 
 applyTheme(themes[currentThemeIndex]);
 
+// Эффект клика (волны)
+document.addEventListener('click', (e) => {
+    const ripple = document.createElement('div');
+    ripple.className = 'click-ripple';
+    ripple.style.left = `${e.clientX}px`;
+    ripple.style.top = `${e.clientY}px`;
+    document.body.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+});
+
 document.querySelectorAll('li').forEach(el=>{
     el.addEventListener('mouseenter',()=>{
         const cmd=el.querySelector('.command');
-        if(cmd)cmd.style.transform='scale(1.03)';
+        if(cmd)cmd.style.transform='scale(1.02)';
     });
     el.addEventListener('mouseleave',()=>{
         const cmd=el.querySelector('.command');
